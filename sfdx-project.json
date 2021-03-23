@@ -2,10 +2,18 @@
     "packageDirectories": [
         {
             "path": "sfdx-source/apex-mocks",
-            "default": true
+            "default": true,
+            "package": "fflib-apex-mocks",
+            "versionName": "Version 1.0",
+            "versionNumber": "1.0.0.NEXT"
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "51.0"
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "fflib-apex-mocks": "0Ho4W000000KyolSAC",
+        "fflib-apex-mocks@1.0.0-1": "04t4W000002GnzUQAS",
+        "fflib-apex-mocks@1.0.0-2": "04t4W000002GnzZQAS"
+    }
 }
