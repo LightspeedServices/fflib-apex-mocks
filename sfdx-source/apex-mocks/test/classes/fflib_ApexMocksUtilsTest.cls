@@ -68,24 +68,25 @@ public class fflib_ApexMocksUtilsTest
 		))[0];
 
 		//Then
-		System.assertEquals(acc.Id, accWithRelationships.Id);
-		System.assertEquals(acc.Name, accWithRelationships.Name);
-		System.assertEquals(acc.NumberOfEmployees, accWithRelationships.NumberOfEmployees);
+		System.Assert.areEqual(acc.Id, accWithRelationships.Id);
+		System.Assert.areEqual(acc.Name, accWithRelationships.Name);
+		System.Assert.areEqual(acc.NumberOfEmployees, accWithRelationships.NumberOfEmployees);
 		
 		//Assert relationship fields
 		List<Contact> contacts = accWithRelationships.Contacts;
-		System.assertNotEquals(null, contacts);
-		System.assertEquals(2, contacts.size());
+		System.Assert.areNotEqual(null, contacts);
+		System.Assert.areEqual(2, contacts.size());
 
-		System.assertEquals(contact1.Id, contacts[0].Id);
-		System.assertEquals(contact1.DoNotCall, contacts[0].DoNotCall);
+		System.Assert.areEqual(contact1.Id, contacts[0].Id);
+		System.Assert.areEqual(contact1.DoNotCall, contacts[0].DoNotCall);
 
-		System.assertEquals(contact2.Id, contacts[1].Id);
-		System.assertEquals(contact2.DoNotCall, contacts[1].DoNotCall);
+		System.Assert.areEqual(contact2.Id, contacts[1].Id);
+		System.Assert.areEqual(contact2.DoNotCall, contacts[1].DoNotCall);
 	}
 
 	@isTest
-	private static void makeRelationship_GenericOverload_ReturnsObjectsWithRelationFieldSet() {
+	private static void makeRelationship_GenericOverload_ReturnsObjectsWithRelationFieldSet() 
+	{
 		//Given
 		SObject acc = Schema.getGlobalDescribe().get('Account').newSObject();
 		acc.put('Id', fflib_IDGenerator.generate(acc.getSObjectType()));
@@ -111,25 +112,25 @@ public class fflib_ApexMocksUtilsTest
 		))[0];
 
 		//Then
-		System.assertEquals(acc.Id, accWithRelationships.Id);
-		System.assertEquals(acc.get('Name'), accWithRelationships.get('Name'));
-		System.assertEquals(acc.get('NumberOfEmployees'), accWithRelationships.get('NumberOfEmployees'));
+		System.Assert.areEqual(acc.Id, accWithRelationships.Id);
+		System.Assert.areEqual(acc.get('Name'), accWithRelationships.get('Name'));
+		System.Assert.areEqual(acc.get('NumberOfEmployees'), accWithRelationships.get('NumberOfEmployees'));
 
 		//Assert relationship fields
 		List<SObject> contacts = accWithRelationships.getSObjects('Contacts');
-		System.assertNotEquals(null, contacts);
-		System.assertEquals(2, contacts.size());
+		System.Assert.areNotEqual(null, contacts);
+		System.Assert.areEqual(2, contacts.size());
 
-		System.assertEquals(contact1.Id, contacts[0].Id);
-		System.assertEquals((Boolean)contact1.get('DoNotCall'), (Boolean)contacts[0].get('DoNotCall'));
+		System.Assert.areEqual(contact1.Id, contacts[0].Id);
+		System.Assert.areEqual((Boolean)contact1.get('DoNotCall'), (Boolean)contacts[0].get('DoNotCall'));
 
-		System.assertEquals(contact2.Id, contacts[1].Id);
-		System.assertEquals((Boolean)contact2.get('DoNotCall'), (Boolean)contacts[1].get('DoNotCall'));
+		System.Assert.areEqual(contact2.Id, contacts[1].Id);
+		System.Assert.areEqual((Boolean)contact2.get('DoNotCall'), (Boolean)contacts[1].get('DoNotCall'));
 	}
 
 	@isTest
-	private static void makeRelationship_GenericOverload_ThrowsErrorOnInvalidParentType() {
-
+	private static void makeRelationship_GenericOverload_ThrowsErrorOnInvalidParentType() 
+	{
 		// Setup parent object
 		SObject acc = Schema.getGlobalDescribe().get('Account').newSObject();
 		acc.put('Id', fflib_IDGenerator.generate(acc.getSObjectType()));
@@ -151,12 +152,12 @@ public class fflib_ApexMocksUtilsTest
 		} catch (Exception exc) {
 			errorMessage = exc.getMessage();
 		}
-		System.assertEquals('SObject type not found: MyInvalidParentType', errorMessage);
+		System.Assert.areEqual('SObject type not found: MyInvalidParentType', errorMessage);
 	}
 
 	@isTest
-	private static void makeRelationship_GenericOverload_ThrowsErrorOnInvalidChildType() {
-
+	private static void makeRelationship_GenericOverload_ThrowsErrorOnInvalidChildType() 
+	{
 		// Setup parent object
 		SObject acc = Schema.getGlobalDescribe().get('Account').newSObject();
 		acc.put('Id', fflib_IDGenerator.generate(acc.getSObjectType()));
@@ -178,12 +179,12 @@ public class fflib_ApexMocksUtilsTest
 		} catch (Exception exc) {
 			errorMessage = exc.getMessage();
 		}
-		System.assertEquals('SObject type not found: MyInvalidChildType', errorMessage);
+		System.Assert.areEqual('SObject type not found: MyInvalidChildType', errorMessage);
 	}
 
 	@isTest
-	private static void makeRelationship_GenericOverload_ThrowsErrorOnInvalidFieldName() {
-
+	private static void makeRelationship_GenericOverload_ThrowsErrorOnInvalidFieldName() 
+	{
 		// Setup parent object
 		SObject acc = Schema.getGlobalDescribe().get('Account').newSObject();
 		acc.put('Id', fflib_IDGenerator.generate(acc.getSObjectType()));
@@ -205,7 +206,68 @@ public class fflib_ApexMocksUtilsTest
 		} catch (Exception exc) {
 			errorMessage = exc.getMessage();
 		}
-		System.assertEquals('SObject field not found: MyInvalidField', errorMessage);
+		System.Assert.areEqual('SObject field not found: MyInvalidField', errorMessage);
+	}
+
+	@IsTest 
+	private static void makeRelationship_ObjectWithNull_DoesNotThrowErrorOnJSONExceptionCanNotWriteAFieldNameExpectingAValue() 
+	{	
+		// Given
+		Product2 prod1 = new Product2(
+			Id = fflib_IDGenerator.generate(Product2.SObjectType),
+			Name = 'Product1',
+			ProductCode = 'P1',
+			Description = null,
+			StockKeepingUnit = 'P1'
+		);
+
+		Product2 prod2 = new Product2(
+			Id = fflib_IDGenerator.generate(Product2.SObjectType),
+			Name = 'Product2',
+			ProductCode = 'P2',
+			Description = 'this is another product',
+			StockKeepingUnit = 'P2'
+		);
+
+		OpportunityLineItem oli1 = new OpportunityLineItem(
+			Id = fflib_IDGenerator.generate(OpportunityLineItem.SObjectType),
+			Product2Id = prod1.Id,
+			Product2 = prod1,
+			UnitPrice = 10,
+			Quantity = 1
+		);
+
+		OpportunityLineItem oli2 = new OpportunityLineItem(
+			Id = fflib_IDGenerator.generate(OpportunityLineItem.SObjectType),
+			Product2Id = prod2.Id,
+			Product2 = prod2,
+			UnitPrice = 10,
+			Quantity = 1
+		);
+
+		Opportunity opportunity = new Opportunity();
+
+		Exception exceptionThatWasCalled = null;
+
+		// When
+		Test.startTest();
+		
+		try {
+			fflib_ApexMocksUtils.makeRelationship(
+				List<Opportunity>.class,
+				new List<Opportunity>{ opportunity },
+				OpportunityLineItem.OpportunityId,
+				new List<List<OpportunityLineItem>>{ new List<OpportunityLineItem>{oli1, oli2} }
+			);
+		} catch (JSONException e) {
+			exceptionThatWasCalled = e;
+		}
+
+		Test.stopTest();
+
+		// Then
+		System.debug(exceptionThatWasCalled);
+		Assert.isNull(exceptionThatWasCalled, 'Exception should not have been called');
 	}
 
 	@isTest
@@ -222,7 +284,7 @@ public class fflib_ApexMocksUtilsTest
 		);
 		Test.stopTest();
 
-		System.assertEquals(userId, acc.CreatedById);
+		System.Assert.areEqual(userId, acc.CreatedById);
 	}
 
 	@isTest
@@ -239,7 +301,7 @@ public class fflib_ApexMocksUtilsTest
 		);
 		Test.stopTest();
 
-		System.assertEquals(lastRefDate, acc.LastReferencedDate);
+		System.Assert.areEqual(lastRefDate, acc.LastReferencedDate);
 	}
 
 	@isTest
@@ -256,7 +318,7 @@ public class fflib_ApexMocksUtilsTest
 		);
 		Test.stopTest();
 
-		System.assertEquals(isDeleted, acc.IsDeleted);
+		System.Assert.areEqual(isDeleted, acc.IsDeleted);
 	}
 
 	@isTest
@@ -273,6 +335,6 @@ public class fflib_ApexMocksUtilsTest
 		);
 		Test.stopTest();
 
-		System.assertEquals(acc.Name, t.What.Name);
+		System.Assert.areEqual(acc.Name, t.What.Name);
 	}
 }
