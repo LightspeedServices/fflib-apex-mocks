@@ -1,18 +1,19 @@
 {
-    "packageDirectories": [
-        {
-            "path": "sfdx-source/apex-mocks",
-            "default": true,
-            "package": "fflib-apex-mocks",
-            "versionName": "Version 1.0",
-            "versionNumber": "1.0.0.NEXT"
-        }
-    ],
-    "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "55.0",
-    "packageAliases": {
-        "fflib-apex-mocks": "0Ho4w000000TN23CAG",
-        "fflib-apex-mocks@1.0.0-1": "04t4w000000MqJaAAK"
+  "packageDirectories": [
+    {
+      "path": "sfdx-source/apex-mocks",
+      "default": true,
+      "package": "fflib-apex-mocks",
+      "versionName": "Version 1.0",
+      "versionNumber": "1.0.0.NEXT"
     }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "63.0",
+  "packageAliases": {
+    "fflib-apex-mocks": "0Ho4w000000TN23CAG",
+    "fflib-apex-mocks@1.0.0-1": "04t4w000000MqJaAAK",
+    "fflib-apex-mocks@1.0.0-2": "04tN3000009sfQKIAY"
+  }
 }
